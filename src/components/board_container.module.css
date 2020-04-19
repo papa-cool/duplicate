@@ -1,0 +1,12 @@
+.board {
+  width: 510px;
+  height: 510px;
+  padding: 2px;
+  position: relative;
+}
+
+.line {
+  display: block;
+  height: 34px;
+  position: relative;
+}

@@ -1,0 +1,15 @@
+.letter {
+  background-color: #F0EBCA;
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+}
+
+.value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  width: 100%;
+  height: 100%;
+}

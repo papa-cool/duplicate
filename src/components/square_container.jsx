@@ -5,40 +5,53 @@ import BasicSquare, {
   TripleLetterSquare,
   DoubleWordSquare,
   TripleWordSquare
-} from './square.js';
-import Letter from './letter.js';
+} from './square.jsx';
+import Letter from './letter.jsx';
 
 
 class SquareContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      selected: false,
       letter: null
     }
+    // this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.handleClick(this)
+  }
+
+  select() {
+    return this.setState({selected: true});
+  }
+
+  unselect() {
+    return this.setState({selected: false});
   }
 
   render() {
-    const type = this.props.type
     let square
 
     switch(this.props.type) {
       case 'DoubleLetter':
-        square = <DoubleLetterSquare />;
+        square = <DoubleLetterSquare selected={this.state.selected} />;
         break;
       case 'TripleLetter':
-        square = <TripleLetterSquare />;
+        square = <TripleLetterSquare selected={this.state.selected} />;
         break;
       case 'DoubleWord':
-        square = <DoubleWordSquare />;
+        square = <DoubleWordSquare selected={this.state.selected} />;
         break;
       case 'TripleWord':
-        square = <TripleWordSquare />;
+        square = <TripleWordSquare selected={this.state.selected} />;
         break;
       default:
-        square = <BasicSquare />;
+        square = <BasicSquare selected={this.state.selected} />;
     }
     return (
-      <div className={styles.square_container}>
+      <div className={styles.square_container} onClick={this.handleClick.bind(this)}>
         { this.state.letter ? <Letter letter={this.state.letter} /> : square }
       </div>
     );

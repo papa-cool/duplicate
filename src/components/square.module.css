@@ -1,42 +1,35 @@
+.square {
+  width: 34px;
+  height: 34px;
+  border-width: 2px;
+  position: relative;
+  box-sizing: border-box;
+  border-color: white;
+  border-style: solid;
+}
+
 .basic {
   background-color: #6ED5A8;
-  width: 30px;
-  height: 30px;
-  margin: 2px;
-  position: relative;
 }
 
 .double_letter {
-  display:block;
   background-color: #4CC8FE;
-  width: 30px;
-  height: 30px;
-  margin: 2px;
-  position: relative;
 }
 
 .triple_letter {
   background-color: #5C97C1;
-  width: 30px;
-  height: 30px;
-  margin: 2px;
-  position: relative;
 }
 
 .double_word {
   background-color: #F5907A;
-  width: 30px;
-  height: 30px;
-  margin: 2px;
-  position: relative;
 }
-
 .triple_word {
   background-color: #FF0000;
-  width: 30px;
-  height: 30px;
-  margin: 2px;
-  position: relative;
+}
+
+.selected {
+  border-color: black;
+  border-style: solid;
 }
 
 .text {

@@ -1,8 +1,21 @@
+.square {
+  width: 34px;
+  height: 34px;
+  border-width: 2px;
+  position: relative;
+  box-sizing: border-box;
+  border-color: #F0EBCA;
+  border-style: solid;
+  border-radius: 5px;
+}
+
 .letter {
   background-color: #F0EBCA;
-  width: 30px;
-  height: 30px;
-  margin: 2px;
+}
+
+.selected {
+  border-color: black;
+  border-style: solid;
 }
 
 .value {

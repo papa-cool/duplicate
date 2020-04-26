@@ -24,11 +24,15 @@ class SquareContainer extends React.Component {
   }
 
   select() {
-    return this.setState({selected: true});
+    this.setState({selected: true});
   }
 
   unselect() {
-    return this.setState({selected: false});
+    this.setState({selected: false});
+  }
+
+  assign(letter) {
+    this.setState({letter: letter});
   }
 
   render() {
@@ -52,7 +56,7 @@ class SquareContainer extends React.Component {
     }
     return (
       <div className={styles.square_container} onClick={this.handleClick.bind(this)}>
-        { this.state.letter ? <Letter letter={this.state.letter} /> : square }
+        { this.state.letter ? <Letter letter={this.state.letter} selected={this.state.selected} /> : square }
       </div>
     );
   }

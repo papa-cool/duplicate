@@ -1,12 +1,14 @@
 .board {
-  width: 510px;
-  height: 510px;
-  padding: 2px;
+  height: 100%;
+  width: 66.66%;
+  border-width: calc(min(90vh, 66.67vw) * 0.06 * 0.05);/* A twentieth of a square */
+  box-sizing: border-box;
   position: relative;
 }
 
 .line {
   display: block;
-  height: 34px;
+  height: 6.66%;
+  width: 100%;
   position: relative;
 }

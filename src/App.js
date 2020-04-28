@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import BoardContainer from './components/board_container.jsx';
+import GameContainer from './components/game_container.jsx';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
           Duplicate
         </p>
       </header>
-      <BoardContainer />
+      <GameContainer />
     </div>
   );
 }

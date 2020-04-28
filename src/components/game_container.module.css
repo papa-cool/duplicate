@@ -1,0 +1,6 @@
+.game {
+  margin-left: auto;
+  margin-right: auto;
+  width: min(100vw, 135vh);
+  height: min(90vh, 66.67vw);
+}

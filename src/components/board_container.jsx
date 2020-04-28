@@ -1,24 +1,7 @@
 import React from 'react';
 import styles from './board_container.module.css';
 import SquareContainer from './square_container.jsx';
-
-const BOARD = [
-  [{type:'TripleWord'}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'TripleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {type:'TripleWord'}, ],
-  [{}, {type:'DoubleWord'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, ],
-  [{}, {}, {type:'DoubleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, ],
-  [{type:'DoubleLetter'}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {type:'DoubleLetter'}, ],
-  [{}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {}, ],
-  [{}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, ],
-  [{}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, ],
-  [{type:'TripleWord'}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {type:'TripleWord'}, ],
-  [{}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, ],
-  [{}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, ],
-  [{}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {}, ],
-  [{type:'DoubleLetter'}, {}, {}, {type:'DoubleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, {type:'DoubleLetter'}, ],
-  [{}, {}, {type:'DoubleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, ],
-  [{}, {type:'DoubleWord'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, ],
-  [{type:'TripleWord'}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'TripleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {type:'TripleWord'}, ],
-]
+import Board from './board.js';
 
 class BoardContainer extends React.Component {
   constructor(props){
@@ -54,7 +37,7 @@ class BoardContainer extends React.Component {
     return (
       <div className={styles.board} onKeyPress={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyDown.bind(this)} onBlur={this.handleBlur.bind(this)} tabIndex="-1" style={{outline: 'none'}}>
         {
-          BOARD.map((squares_line, index_line) => {
+          Board.map((squares_line, index_line) => {
             return (
               <div className={styles.line} key={index_line.toString()}>
                 {

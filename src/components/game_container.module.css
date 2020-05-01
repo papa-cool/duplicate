@@ -2,5 +2,45 @@
   margin-left: auto;
   margin-right: auto;
   width: min(100vw, 135vh);
-  height: min(90vh, 66.67vw);
+  height: min(97vh, 68.18vw);
+}
+
+.board {
+  height: 100%;
+  width: calc(100% / 22 * 15);
+  position: relative;
+  display: inline-block;
+  background-color: white;
+  overflow: hidden;
+}
+
+.panel {
+  height: 100%;
+  width: calc(100% / 22 * 7);
+  display: inline-block;
+  position: relative;
+  background-color: white;
+  overflow: hidden;
+}
+
+.score {
+  height: calc(100% / 15 * 6);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.easel {
+  height: calc(100% / 15 * 2);
+  width: 100%;
+  position: relative;
+  background-color: #244C38;
+  overflow: hidden;
+}
+
+.draft {
+  height: calc(100% / 15 * 7);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
 }

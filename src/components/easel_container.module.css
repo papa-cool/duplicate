@@ -1,0 +1,15 @@
+.easel {
+  height: 50%;
+  width: 100%;
+  position: relative;
+  top: 25%;
+  overflow: hidden;
+}
+
+.square {
+  height: 100%;
+  width: calc(100% / 7);
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}

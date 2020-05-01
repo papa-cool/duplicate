@@ -7,8 +7,6 @@ class BoardContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      // letters: []
-      // letters: [{value:'A', id:1},{value:'B', id:2},{value:'C', id:3},{value:'D', id:4},]
       selected: null
     }
   }

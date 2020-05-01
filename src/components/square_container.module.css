@@ -1,6 +1,6 @@
 .square_container {
   height: 100%;
-  width: 6.66%;
+  width: calc(100% / 15);
   display: inline-block;
   position: relative;
   overflow: hidden;

@@ -9,20 +9,30 @@ class BoardContainer extends React.Component {
     this.state = {
       selected: null
     }
+    this.board = React.createRef()
   }
 
   handleClick = (container) => {
     if(this.state.selected) { this.state.selected.unselect() }
-    this.setState({selected: container});
+    this.setState({selected: container})
     container.select()
+    this.board.current.focus()
   }
 
   handleKeyPress(event) {
-    if(this.state.selected) { this.state.selected.assign(event.key.toUpperCase()) }
+    if(this.state.selected) {
+      if(this.state.selected.state.letter) {
+        this.props.easel.current.resetLetter(this.state.selected.state.letter)
+      }
+      this.state.selected.assign(this.props.easel.current.getLetter(event.key.toUpperCase()))
+    }
   }
 
   handleKeyDown(event) {
     if(this.state.selected && (event.keyCode === 8 || event.keyCode === 46)) {
+      if(this.state.selected.state.letter) {
+        this.props.easel.current.resetLetter(this.state.selected.state.letter)
+      }
       this.state.selected.assign(null)
     }
   }
@@ -33,7 +43,7 @@ class BoardContainer extends React.Component {
 
   render() {
     return (
-      <div className={styles.board} onKeyPress={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyDown.bind(this)} onBlur={this.handleBlur.bind(this)} tabIndex="-1" style={{outline: 'none'}}>
+      <div className={styles.board} ref={this.board} onKeyPress={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyDown.bind(this)} onBlur={this.handleBlur.bind(this)} tabIndex="-1" style={{outline: 'none'}}>
         {
           Board.map((squares_line, index_line) => {
             return (

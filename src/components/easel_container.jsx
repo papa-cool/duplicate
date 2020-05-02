@@ -6,8 +6,32 @@ class EaselContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      letters: ['A', 'B', ' ', null, 'E', null, 'G']
+      letters: ['A', 'A', ' ', null, 'E', null, 'G']
     }
+  }
+
+  getLetter(queryLetter) {
+    let letter = null
+    this.state.letters.some((element, index) => {
+      if(element === queryLetter) {
+        letter = element
+        this.state.letters[index] = null
+        this.setState({letters: this.state.letters});
+        return true
+      }
+    })
+
+    return letter;
+  }
+
+  resetLetter(letter) {
+    this.state.letters.some((element, index) => {
+      if(element === null) {
+        this.state.letters[index] = letter
+        this.setState({letters: this.state.letters});
+        return true
+      }
+    })
   }
 
   render() {

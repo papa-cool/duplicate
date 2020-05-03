@@ -7,11 +7,23 @@ class BoardContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selected: null
+      selected: null,
+      current: {},
+      saved: {}
     }
     this.board = React.createRef()
   }
 
+  // Save current letters and fill the easel with letter from the stack.
+  play() {
+    this.setState({
+      current: {},
+      saved: {...this.state.saved, ...this.state.current}
+    })
+    this.props.easel.current.pullFromStack()
+  }
+
+  // Select a square.
   handleClick = (container) => {
     if(this.state.selected) { this.state.selected.unselect() }
     this.setState({selected: container})
@@ -19,21 +31,30 @@ class BoardContainer extends React.Component {
     this.board.current.focus()
   }
 
+  // Add pressed letter if available to the selected square.
   handleKeyPress(event) {
-    if(this.state.selected) {
-      if(this.state.selected.state.letter) {
-        this.props.easel.current.resetLetter(this.state.selected.state.letter)
-      }
-      this.state.selected.assign(this.props.easel.current.getLetter(event.key.toUpperCase()))
+    if(!this.state.selected) { return }
+    if(this.state.saved[this.state.selected.props.index]) { return }
+    let new_index = {}
+
+    if(this.state.current[this.state.selected.props.index]) {
+      this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
     }
+    new_index[this.state.selected.props.index] = this.props.easel.current.getLetter(event.key.toUpperCase())
+    this.setState({current: {...this.state.current, ...new_index}})
   }
 
   handleKeyDown(event) {
     if(this.state.selected && (event.keyCode === 8 || event.keyCode === 46)) {
-      if(this.state.selected.state.letter) {
-        this.props.easel.current.resetLetter(this.state.selected.state.letter)
+      // Remove letter if present from the selected square.
+      if(this.state.current[this.state.selected.props.index]) {
+        this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
       }
-      this.state.selected.assign(null)
+      let new_index = {}
+      new_index[this.state.selected.props.index] = null
+      this.setState({current: {...this.state.current, ...new_index}})
+    } else if(event.keyCode === 13) {
+      this.play()
     }
   }
 
@@ -50,7 +71,8 @@ class BoardContainer extends React.Component {
               <div className={styles.line} key={index_line.toString()}>
                 {
                   squares_line.map((square, index_square) => {
-                    return (<SquareContainer key={index_line.toString()+'-'+index_square.toString()} type={square.type} handleClick={this.handleClick} />)
+                    let key = index_line.toString()+'-'+index_square.toString()
+                    return (<SquareContainer key={key} index={key} letter={this.state.saved[key] || this.state.current[key]} type={square.type} handleClick={this.handleClick} />)
                   })
                 }
               </div>

@@ -13,8 +13,7 @@ class SquareContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selected: false,
-      letter: null
+      selected: false
     }
   }
 
@@ -55,7 +54,7 @@ class SquareContainer extends React.Component {
     }
     return (
       <div className={styles.square_container} onClick={this.handleClick.bind(this)}>
-        { this.state.letter ? <Letter letter={this.state.letter} selected={this.state.selected} /> : square }
+        { this.props.letter ? <Letter letter={this.props.letter} selected={this.state.selected} /> : square }
       </div>
     );
   }

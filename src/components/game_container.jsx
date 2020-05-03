@@ -10,14 +10,6 @@ class GameContainer extends React.Component {
     this.easel = React.createRef()
   }
 
-  getLetterFromEasel = (letter) => {
-    return this.easel.current.getLetter(letter)
-  }
-
-  resetLetterFromEasel = (letter) => {
-    return this.easel.current.resetLetter(letter)
-  }
-
   render() {
     return (
       <div className={styles.game}>

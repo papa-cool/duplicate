@@ -35,24 +35,26 @@ class BoardContainer extends React.Component {
   handleKeyPress(event) {
     if(!this.state.selected) { return }
     if(this.state.saved[this.state.selected.props.index]) { return }
-    let new_index = {}
+    let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
 
     if(this.state.current[this.state.selected.props.index]) {
       this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
     }
-    new_index[this.state.selected.props.index] = this.props.easel.current.getLetter(event.key.toUpperCase())
-    this.setState({current: {...this.state.current, ...new_index}})
+    let letter = this.props.easel.current.getLetter(event.key.toUpperCase())
+    if(letter) { new_current[this.state.selected.props.index] = letter }
+    
+    this.setState({current: new_current})
   }
 
   handleKeyDown(event) {
     if(this.state.selected && (event.keyCode === 8 || event.keyCode === 46)) {
       // Remove letter if present from the selected square.
+      if(this.state.saved[this.state.selected.props.index]) { return }
       if(this.state.current[this.state.selected.props.index]) {
         this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
       }
-      let new_index = {}
-      new_index[this.state.selected.props.index] = null
-      this.setState({current: {...this.state.current, ...new_index}})
+      let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
+      this.setState({current: new_current})
     } else if(event.keyCode === 13) {
       this.play()
     }

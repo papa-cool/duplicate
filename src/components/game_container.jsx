@@ -23,6 +23,7 @@ class GameContainer extends React.Component {
             <EaselContainer ref={this.easel}/>
           </div>
           <div className={styles.draft}>
+            <textarea className={styles.textarea} name="draft" />
           </div>
         </div>
       </div>

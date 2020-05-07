@@ -1,5 +1,5 @@
 
-const Board = [
+const BOARD = [
   [{type:'TripleWord'}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'TripleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {type:'TripleWord'}, ],
   [{}, {type:'DoubleWord'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'TripleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, ],
   [{}, {}, {type:'DoubleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'DoubleWord'}, {}, {}, ],
@@ -17,4 +17,4 @@ const Board = [
   [{type:'TripleWord'}, {}, {}, {type:'DoubleLetter'}, {}, {}, {}, {type:'TripleWord'}, {}, {}, {}, {type:'DoubleLetter'}, {}, {}, {type:'TripleWord'}, ],
 ]
 
-export default Board;
+export default BOARD;

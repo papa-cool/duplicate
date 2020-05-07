@@ -1,4 +1,4 @@
-.square_container {
+.squareContainer {
   height: 100%;
   width: calc(100% / 15);
   display: inline-block;

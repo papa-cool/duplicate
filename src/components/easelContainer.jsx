@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from './easel_container.module.css';
+import styles from './easelContainer.module.css';
 import Letter from './letter.jsx';
-import { FRENCH } from './letters_distribution.js';
-import Knuth from '../knuth_shuffle.js';
+import { FRENCH } from '../data/lettersDistribution.js';
+import Knuth from '../services/knuthShuffle.js';
 
 class EaselContainer extends React.Component {
   constructor(props){

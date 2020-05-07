@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './square_container.module.css';
+import styles from './squareContainer.module.css';
 import BasicSquare, {
   DoubleLetterSquare,
   TripleLetterSquare,
@@ -53,7 +53,7 @@ class SquareContainer extends React.Component {
         square = <BasicSquare selected={this.state.selected} />;
     }
     return (
-      <div className={styles.square_container} onClick={this.handleClick.bind(this)}>
+      <div className={styles.squareContainer} onClick={this.handleClick.bind(this)}>
         { this.props.letter ? <Letter letter={this.props.letter} selected={this.state.selected} /> : square }
       </div>
     );

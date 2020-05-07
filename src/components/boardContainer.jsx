@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './board_container.module.css';
-import SquareContainer from './square_container.jsx';
-import Board from './board.js';
+import styles from './boardContainer.module.css';
+import SquareContainer from './squareContainer.jsx';
+import BOARD from '../data/board.js';
 
 class BoardContainer extends React.Component {
   constructor(props){
@@ -12,6 +12,41 @@ class BoardContainer extends React.Component {
       saved: {}
     }
     this.board = React.createRef()
+  }
+
+  changeSelection(container) {
+    if(this.state.selected) { this.state.selected.unselect() }
+    this.setState({selected: container})
+    container.select()
+    this.board.current.focus()
+  }
+
+  removeSelection() {
+    if(this.state.selected) { this.state.selected.unselect() }
+  }
+
+  moveLetter(letter) {
+    if(!this.state.selected) { return }
+    if(this.state.saved[this.state.selected.props.index]) { return }
+    let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
+
+    if(this.state.current[this.state.selected.props.index]) {
+      this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
+    }
+    if(this.props.easel.current.getLetter(letter)) {
+      new_current[this.state.selected.props.index] = letter
+    }
+    
+    this.setState({current: new_current})
+  }
+
+  removeLetter() {
+    if(this.state.saved[this.state.selected.props.index]) { return }
+    if(this.state.current[this.state.selected.props.index]) {
+      this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
+    }
+    let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
+    this.setState({current: new_current})
   }
 
   // Save current letters and fill the easel with letter from the stack.
@@ -25,50 +60,31 @@ class BoardContainer extends React.Component {
 
   // Select a square.
   handleClick = (container) => {
-    if(this.state.selected) { this.state.selected.unselect() }
-    this.setState({selected: container})
-    container.select()
-    this.board.current.focus()
+    this.changeSelection(container)
   }
 
   // Add pressed letter if available to the selected square.
   handleKeyPress(event) {
-    if(!this.state.selected) { return }
-    if(this.state.saved[this.state.selected.props.index]) { return }
-    let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
-
-    if(this.state.current[this.state.selected.props.index]) {
-      this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
-    }
-    let letter = this.props.easel.current.getLetter(event.key.toUpperCase())
-    if(letter) { new_current[this.state.selected.props.index] = letter }
-    
-    this.setState({current: new_current})
+    this.moveLetter(event.key.toUpperCase())
   }
 
   handleKeyDown(event) {
     if(this.state.selected && (event.keyCode === 8 || event.keyCode === 46)) {
-      // Remove letter if present from the selected square.
-      if(this.state.saved[this.state.selected.props.index]) { return }
-      if(this.state.current[this.state.selected.props.index]) {
-        this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
-      }
-      let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
-      this.setState({current: new_current})
+      this.removeLetter()
     } else if(event.keyCode === 13) {
       this.play()
     }
   }
 
   handleBlur() {
-    if(this.state.selected) { this.state.selected.unselect() }
+    this.removeSelection()
   }
 
   render() {
     return (
       <div className={styles.board} ref={this.board} onKeyPress={this.handleKeyPress.bind(this)} onKeyDown={this.handleKeyDown.bind(this)} onBlur={this.handleBlur.bind(this)} tabIndex="-1" style={{outline: 'none'}}>
         {
-          Board.map((squares_line, index_line) => {
+          BOARD.map((squares_line, index_line) => {
             return (
               <div className={styles.line} key={index_line.toString()}>
                 {

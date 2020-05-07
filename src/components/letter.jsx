@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './letter.module.css';
-import { FRENCH_POINTS } from './letters_distribution.js';
+import { FRENCH_POINTS } from '../data/lettersDistribution.js';
 
 let cx = classNames.bind(styles);
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from './game_container.module.css';
-import BoardContainer from './board_container.jsx';
-import EaselContainer from './easel_container.jsx';
+import styles from './gameContainer.module.css';
+import BoardContainer from './boardContainer.jsx';
+import EaselContainer from './easelContainer.jsx';
 
 class GameContainer extends React.Component {
   constructor(props){
@@ -14,7 +14,7 @@ class GameContainer extends React.Component {
     return (
       <div className={styles.game}>
         <div className={styles.board}>
-          <BoardContainer easel={this.easel}/>
+          <BoardContainer easel={this.easel} />
         </div>
         <div className={styles.panel}>
           <div className={styles.score}>

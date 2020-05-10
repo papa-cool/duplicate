@@ -37,7 +37,7 @@ class BoardContainer extends React.Component {
       new_current[this.state.selected.props.index] = letter
     }
     
-    this.setState({current: new_current})
+    this.setState({current: new_current}, () => this.props.score(this.state.current, this.state.saved))
   }
 
   removeLetter() {
@@ -46,7 +46,7 @@ class BoardContainer extends React.Component {
       this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
     }
     let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
-    this.setState({current: new_current})
+    this.setState({current: new_current}, () => this.props.score(this.state.current, this.state.saved))
   }
 
   // Save current letters and fill the easel with letter from the stack.

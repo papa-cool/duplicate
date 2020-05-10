@@ -23,8 +23,15 @@
   overflow: hidden;
 }
 
+.players {
+  height: calc(100% / 15 * 5);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 .score {
-  height: calc(100% / 15 * 6);
+  height: calc(100% / 15 * 1);
   width: 100%;
   position: relative;
   overflow: hidden;

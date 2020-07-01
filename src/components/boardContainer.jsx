@@ -55,7 +55,7 @@ class BoardContainer extends React.Component {
       current: {},
       saved: {...this.state.saved, ...this.state.current}
     })
-    this.props.easel.current.pullFromStack()
+    this.props.play()
   }
 
   // Select a square.

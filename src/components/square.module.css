@@ -1,7 +1,7 @@
 .square {
   height: 100%;
   width: 100%;
-  border-width: calc(min(97vh, 66.67vw) / 15 / 20);/* A twentieth of a square */
+  border-width: calc(min(97vh, 66.67vw) / 15 / 40);/* A twentieth of a square */
   position: relative;
   box-sizing: border-box;
   border-color: white;
@@ -10,6 +10,7 @@
 
 .basic {
   background-color: #6ED5A8;
+  color: #6ED5A8;
 }
 
 .double_letter {

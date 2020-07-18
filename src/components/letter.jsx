@@ -8,10 +8,10 @@ let cx = classNames.bind(styles);
 const Letter = ({letter, selected}) =>
   <div className={cx('letter', 'square', {selected: selected})}>
     <div className={styles.value}>
-      <p>{letter}</p>
+      <div>{letter}</div>
     </div>
     <div className={styles.point}>
-      <p>{FRENCH_POINTS[letter]}</p>
+      <div>{FRENCH_POINTS[letter]}</div>
     </div>
   </div>
 export default Letter;

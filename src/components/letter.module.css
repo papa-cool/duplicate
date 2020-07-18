@@ -10,7 +10,19 @@
 }
 
 .letter {
+  height: 100%;
+  width: 100%;
+  border-width: calc(min(97vh, 66.67vw) / 15 / 20); /* A twentieth of a square */
+  border-style: solid;
+  border-radius: 12%;
+  border-color: #ffffff00;
+  box-sizing: border-box;
   background-color: #F0EBCA;
+  background-clip: padding-box;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
 }
 
 .selected {

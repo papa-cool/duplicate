@@ -38,23 +38,23 @@ class SquareContainer extends React.Component {
 
     switch(this.props.type) {
       case 'DoubleLetter':
-        square = <DoubleLetterSquare selected={this.state.selected} />;
+        square = <DoubleLetterSquare key={"square"} selected={this.state.selected} />;
         break;
       case 'TripleLetter':
-        square = <TripleLetterSquare selected={this.state.selected} />;
+        square = <TripleLetterSquare key={"square"} selected={this.state.selected} />;
         break;
       case 'DoubleWord':
-        square = <DoubleWordSquare selected={this.state.selected} />;
+        square = <DoubleWordSquare key={"square"} selected={this.state.selected} />;
         break;
       case 'TripleWord':
-        square = <TripleWordSquare selected={this.state.selected} />;
+        square = <TripleWordSquare key={"square"} selected={this.state.selected} />;
         break;
       default:
-        square = <BasicSquare selected={this.state.selected} />;
+        square = <BasicSquare key={"square"} selected={this.state.selected} />;
     }
     return (
       <div className={styles.squareContainer} onClick={this.handleClick.bind(this)}>
-        { this.props.letter ? <Letter letter={this.props.letter} selected={this.state.selected} /> : square }
+        { this.props.letter ? [square, <Letter key={"letter"} letter={this.props.letter} />] : square }
       </div>
     );
   }

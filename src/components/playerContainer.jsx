@@ -2,9 +2,6 @@ import React from 'react';
 import styles from './player.module.css';
 
 class PlayerContainer extends React.Component {
-  constructor(props){
-    super(props)
-  }
 
   tableFromPlayers() {
     let scores = Object.entries(this.props.players).map(([name, scores]) => [...scores, ...Array(10)])

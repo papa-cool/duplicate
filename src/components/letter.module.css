@@ -31,21 +31,18 @@
 }
 
 .value {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  padding: 12.5% 0;
+  text-align: center;
   font-size: calc(min(97vh, 66.67vw) / 15 / 2); /* Half of a square */
   width: 100%;
-  height: 100%;
+  height: 75%;
 }
 
 .point {
-  position:absolute;
+  position: absolute;
   bottom: 0px;
   right: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: calc(min(97vh, 66.67vw) / 15 / 2 / 3); /* Half of a square dividec by three */
   width: calc(100%/3);
   height: calc(100%/3);

@@ -90,7 +90,11 @@ class BoardContainer extends React.Component {
                 {
                   squares_line.map((square, index_square) => {
                     let key = index_line.toString()+'-'+index_square.toString()
-                    return (<SquareContainer key={key} index={key} letter={this.state.saved[key] || this.state.current[key]} type={square.type} handleClick={this.handleClick} />)
+                    return (
+                      <div className={styles.column} key={key}>
+                        <SquareContainer index={key} letter={this.state.saved[key] || this.state.current[key]} type={square.type} handleClick={this.handleClick} />
+                      </div>
+                    )
                   })
                 }
               </div>

@@ -4,11 +4,19 @@
   border-width: 5%; /* A twentieth of a square */
   box-sizing: border-box;
   position: relative;
+  display: block;
 }
 
 .line {
-  display: block;
   height: calc(100%/15);
   width: 100%;
   position: relative;
+  display: block;
+}
+
+.column {
+  width: calc(100%/15);
+  height: calc(min(97vh, 68.18vw)/15);
+  position: relative;
+  display: inline-block;
 }

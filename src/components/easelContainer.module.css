@@ -3,7 +3,6 @@
   width: 100%;
   position: relative;
   top: 25%;
-  overflow: hidden;
 }
 
 .square {
@@ -11,5 +10,4 @@
   width: calc(100% / 7);
   display: inline-block;
   position: relative;
-  overflow: hidden;
 }

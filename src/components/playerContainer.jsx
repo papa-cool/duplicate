@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './player.module.css';
+import styles from './playerContainer.module.css';
 
 class PlayerContainer extends React.Component {
 

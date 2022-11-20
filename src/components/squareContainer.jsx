@@ -10,27 +10,8 @@ import Letter from './letter.jsx';
 
 
 class SquareContainer extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      selected: false
-    }
-  }
-
   handleClick() {
     this.props.handleClick(this)
-  }
-
-  select() {
-    this.setState({selected: true})
-  }
-
-  unselect() {
-    this.setState({selected: false})
-  }
-
-  assign(letter) {
-    this.setState({letter: letter})
   }
 
   render() {
@@ -38,19 +19,19 @@ class SquareContainer extends React.Component {
 
     switch(this.props.type) {
       case 'DoubleLetter':
-        square = <DoubleLetterSquare key={"square"} selected={this.state.selected} />;
+        square = <DoubleLetterSquare key={"square"} selected={this.props.selected} />;
         break;
       case 'TripleLetter':
-        square = <TripleLetterSquare key={"square"} selected={this.state.selected} />;
+        square = <TripleLetterSquare key={"square"} selected={this.props.selected} />;
         break;
       case 'DoubleWord':
-        square = <DoubleWordSquare key={"square"} selected={this.state.selected} />;
+        square = <DoubleWordSquare key={"square"} selected={this.props.selected} />;
         break;
       case 'TripleWord':
-        square = <TripleWordSquare key={"square"} selected={this.state.selected} />;
+        square = <TripleWordSquare key={"square"} selected={this.props.selected} />;
         break;
       default:
-        square = <BasicSquare key={"square"} selected={this.state.selected} />;
+        square = <BasicSquare key={"square"} selected={this.props.selected} />;
     }
     return (
       <div className={styles.squareContainer} onClick={this.handleClick.bind(this)}>

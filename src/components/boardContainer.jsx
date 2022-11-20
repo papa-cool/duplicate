@@ -7,14 +7,21 @@ class BoardContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      // The square on which we have the focus.
+      // Any action on the board will be applied on the selected square.
       selected: null,
+      // Letters on the board that have been moved is the current rounds.
+      // They can be moved back to the easel.
       current: {},
+      // Letters on the board that have been moved and played during previous rounds.
+      // They cannot be moved back to the easel. They are freeze until the end of the game.
       saved: {}
     }
     this.board = React.createRef()
   }
 
   changeSelection(container) {
+    // Unselect the previous selected square before selecting the new one.
     if(this.state.selected) { this.state.selected.unselect() }
     this.setState({selected: container})
     container.select()
@@ -26,13 +33,18 @@ class BoardContainer extends React.Component {
   }
 
   moveLetter(letter) {
+    // We cannot move any letter if no square are selected.
     if(!this.state.selected) { return }
+    // We cannot move any letter on a square where a letter have already been played.
     if(this.state.saved[this.state.selected.props.index]) { return }
-    let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
 
+    let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
+    // If a letter has already been moved on the selected square,
+    // the letter is sent back to the easel before being replaced.
     if(this.state.current[this.state.selected.props.index]) {
       this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
     }
+    // The requested letter is moved to the selected square if available in the easel.
     if(this.props.easel.current.getLetter(letter)) {
       new_current[this.state.selected.props.index] = letter
     }
@@ -41,10 +53,13 @@ class BoardContainer extends React.Component {
   }
 
   removeLetter() {
+    // A saved letter is freeze and cannot be removed.
     if(this.state.saved[this.state.selected.props.index]) { return }
+    // If present, the letter on the selected square is sent back to the easel.
     if(this.state.current[this.state.selected.props.index]) {
       this.props.easel.current.resetLetter(this.state.current[this.state.selected.props.index])
     }
+
     let { [this.state.selected.props.index]: _, ...new_current } = this.state.current;
     this.setState({current: new_current}, () => this.props.score(this.state.current, this.state.saved))
   }

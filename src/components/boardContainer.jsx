@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './boardContainer.module.css';
 import SquareContainer from './squareContainer.jsx';
 import BOARD from '../data/board.js';
+import tableCursor from '../services/tableCursor.js';
 
 class BoardContainer extends React.Component {
   constructor(props){
@@ -85,6 +86,14 @@ class BoardContainer extends React.Component {
   handleKeyDown(event) {
     if(event.keyCode === 8 || event.keyCode === 46) {
       this.removeLetter()
+    } else if(event.keyCode === 37) {
+      this.changeSelectedSquare(tableCursor.left(this.state.selectedIndex))
+    } else if(event.keyCode === 38) {
+      this.changeSelectedSquare(tableCursor.up(this.state.selectedIndex))
+    } else if(event.keyCode === 39) {
+      this.changeSelectedSquare(tableCursor.right(this.state.selectedIndex))
+    } else if(event.keyCode === 40) {
+      this.changeSelectedSquare(tableCursor.down(this.state.selectedIndex))
     } else if(event.keyCode === 13) {
       this.play()
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GameContainer from './components/gameContainer.jsx';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -28,14 +29,19 @@ getAnalytics(app);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Duplicate
-        </p>
-      </header>
-      <GameContainer />
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <p>
+            Duplicate
+          </p>
+        </header>
+        <Routes>
+          <Route path="/" element={<GameContainer multiplayer={false} />} />
+          <Route path='/game/:id/:name' element={<GameContainer multiplayer={true} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

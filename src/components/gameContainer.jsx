@@ -7,18 +7,36 @@ import letterScore from '../services/letterScore.js';
 import roundScore from '../services/roundScore.js';
 import BOARD from '../data/board.js';
 import { FRENCH_POINTS } from '../data/lettersDistribution.js';
+import { useParams } from 'react-router-dom';
 
+function withRouter(GameContainer) {
+  return (props) => {
+    const params = useParams();
+    return <GameContainer {...props} gameId={params.id} name={params.name} />
+  }
+}
 class GameContainer extends React.Component {
+  // props:
+  // multiplayer
+  // gameId
+  // name
   constructor(props){
     super(props)
     this.state = {
       score: 0,
-      main_player: 'Vous',
-      players: { Vous: [] }
+      name: '',
+      players: {},
     }
     this.player = React.createRef()
     this.easel = React.createRef()
     this.round = React.createRef()
+  }
+
+  componentDidMount() {
+    if (!this.props.multiplayer) {
+      this.setState({ name: 'Solitaire', players: { Solitaire: [] } })
+      return
+    }
   }
 
   roundScore = (currentLetters, savedLetters) => {
@@ -29,7 +47,7 @@ class GameContainer extends React.Component {
 
   pushScore(score) {
     let players = {...this.state.players}
-    let scores = players[this.state.main_player]
+    let scores = players[this.state.name]
     let last_score = scores[scores.length - 1] || 0
 
     scores.push(score + last_score)
@@ -69,4 +87,4 @@ class GameContainer extends React.Component {
   }
 }
 
-export default GameContainer;
+export default withRouter(GameContainer);

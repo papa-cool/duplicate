@@ -4,7 +4,9 @@ import styles from './playerContainer.module.css';
 class PlayerContainer extends React.Component {
 
   tableFromPlayers() {
-    let scores = Object.entries(this.props.players).map(([name, scores]) => [...scores, ...Array(10)])
+    if (Object.entries(this.props.players).length === 0) { return [] }
+
+    let scores = Object.entries(this.props.players).map(([name, scores]) => [...scores || [], ...Array(10)])
 
     return scores[0].map((_, column) => scores.map(row => row[column]))
   }

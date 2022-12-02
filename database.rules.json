@@ -1,7 +1,21 @@
 {
   /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
-    ".read": false,
-    ".write": false
+    ".read": true,
+    ".write": true,
+    "games": {
+      "$game_id": {
+        "creator": { ".validate": "newData.isString()" },
+        "players": {
+          "$name": { 
+            // We store an empty string (initial state to display players).
+            ".validate": "newData.isString()",
+            // Or we store an object representing a list of integer.
+            "$index": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" },
+          }
+        },
+      }
+    },
+    "$other": { ".validate": false }
   }
 }

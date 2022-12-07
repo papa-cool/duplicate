@@ -210,7 +210,7 @@ class GameContainer extends React.Component {
       new_current[this.state.selectedSquareIndex] = letter
     }
     
-    this.setState({currentBoardLetters: new_current}, () => this.roundScore(this.state.currentBoardLetters, this.state.savedBoardLetters))
+    this.setState({currentBoardLetters: new_current}, () => this.calculateScore())
   }
 
   removeLetter() {
@@ -224,7 +224,7 @@ class GameContainer extends React.Component {
     }
 
     let { [this.state.selectedSquareIndex]: _, ...new_current } = this.state.currentBoardLetters;
-    this.setState({currentBoardLetters: new_current}, () => this.roundScore(this.state.currentBoardLetters, this.state.savedBoardLetters))
+    this.setState({currentBoardLetters: new_current}, () => this.calculateScore())
   }
 
   // Save current letters and fill the easel with letter from the stack.
@@ -270,9 +270,12 @@ class GameContainer extends React.Component {
 
   // SCORE AND PLAYER STATE MANAGEMENT
 
-  roundScore = (currentLetters, savedLetters) => {
+  calculateScore() {
     this.setState({
-      score: roundScore.score(letterScore.bind(null, BOARD, FRENCH_POINTS, currentLetters, savedLetters), Object.keys(currentLetters))
+      score: roundScore.score(
+        letterScore.bind(null, BOARD, FRENCH_POINTS, this.state.currentBoardLetters, this.state.savedBoardLetters),
+        Object.keys(this.state.currentBoardLetters)
+      )
     })
   }
 

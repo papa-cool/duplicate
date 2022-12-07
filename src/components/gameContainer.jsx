@@ -6,6 +6,7 @@ import PlayerContainer from './playerContainer.jsx';
 import Knuth from '../services/knuthShuffle.js';
 import letterScore from '../services/letterScore.js';
 import roundScore from '../services/roundScore.js';
+import tableCursor from '../services/tableCursor.js';
 import BOARD from '../data/board.js';
 import { FRENCH, FRENCH_POINTS } from '../data/lettersDistribution.js';
 import { useParams } from 'react-router-dom';
@@ -77,6 +78,15 @@ class GameContainer extends React.Component {
       stackLetters: [],
       // Letters displayed in the easel and that can be move to the board during the round.
       easelLetters: [],
+      // The index of the square we have the focus on.
+      // Any action on the board will be applied on the selected square.
+      selectedSquareIndex: null,
+      // Letters on the board that have been moved is the current rounds.
+      // They can be moved back to the easel.
+      currentBoardLetters: {},
+      // Letters on the board that have been moved and played during previous rounds.
+      // They cannot be moved back to the easel. They are freeze until the end of the game.
+      savedBoardLetters: {},
       score: 0,
       name: '',
       players: {},
@@ -173,6 +183,93 @@ class GameContainer extends React.Component {
     this.setState({easelLetters: this.state.easelLetters})
   }
 
+  // BOARD STATE MANAGEMENT
+
+  changeSelectedSquare(index) {
+    this.setState({selectedSquareIndex: index})
+  }
+
+  removeSelection() {
+    this.setState({selectedSquareIndex: null})
+  }
+
+  moveLetter(letter) {
+    // We cannot move any letter if no square are selected.
+    if(!this.state.selectedSquareIndex) { return }
+    // We cannot move any letter on a square where a letter have already been played.
+    if(this.state.savedBoardLetters[this.state.selectedSquareIndex]) { return }
+
+    let { [this.state.selectedSquareIndex]: _, ...new_current } = this.state.currentBoardLetters;
+    // If a letter has already been moved on the selected square,
+    // the letter is sent back to the easel before being replaced.
+    if(this.state.currentBoardLetters[this.state.selectedSquareIndex]) {
+      this.resetLetter(this.state.currentBoardLetters[this.state.selectedSquareIndex])
+    }
+    // The requested letter is moved to the selected square if available in the easel.
+    if(this.getLetter(letter)) {
+      new_current[this.state.selectedSquareIndex] = letter
+    }
+    
+    this.setState({currentBoardLetters: new_current}, () => this.roundScore(this.state.currentBoardLetters, this.state.savedBoardLetters))
+  }
+
+  removeLetter() {
+    // Nothing to remove if no square are selected.
+    if(!this.state.selectedSquareIndex) { return }
+    // A saved letter is freeze and cannot be removed.
+    if(this.state.savedBoardLetters[this.state.selectedSquareIndex]) { return }
+    // If present, the letter on the selected square is sent back to the easel.
+    if(this.state.currentBoardLetters[this.state.selectedSquareIndex]) {
+      this.resetLetter(this.state.currentBoardLetters[this.state.selectedSquareIndex])
+    }
+
+    let { [this.state.selectedSquareIndex]: _, ...new_current } = this.state.currentBoardLetters;
+    this.setState({currentBoardLetters: new_current}, () => this.roundScore(this.state.currentBoardLetters, this.state.savedBoardLetters))
+  }
+
+  // Save current letters and fill the easel with letter from the stack.
+  play() {
+    this.setState({
+      currentBoardLetters: {},
+      savedBoardLetters: {...this.state.savedBoardLetters, ...this.state.currentBoardLetters}
+    })
+    this.pushScore(this.state.score)
+    this.pullFromStack()
+    this.setState({score: 0})
+  }
+
+  // Select a square.
+  handleClickOnBoard = (clickedSquare) => {
+    this.changeSelectedSquare(clickedSquare.props.index)
+  }
+
+  // Add pressed letter if available to the selected square.
+  handleKeyPressOnBoard(event) {
+    this.moveLetter(event.key.toUpperCase())
+  }
+
+  handleKeyDownOnBoard(event) {
+    if(event.keyCode === 8 || event.keyCode === 46) {
+      this.removeLetter()
+    } else if(event.keyCode === 37) {
+      this.changeSelectedSquare(tableCursor.left(this.state.selectedSquareIndex))
+    } else if(event.keyCode === 38) {
+      this.changeSelectedSquare(tableCursor.up(this.state.selectedSquareIndex))
+    } else if(event.keyCode === 39) {
+      this.changeSelectedSquare(tableCursor.right(this.state.selectedSquareIndex))
+    } else if(event.keyCode === 40) {
+      this.changeSelectedSquare(tableCursor.down(this.state.selectedSquareIndex))
+    } else if(event.keyCode === 13) {
+      this.play()
+    }
+  }
+
+  handleBlurOnBoard() {
+    this.removeSelection()
+  }
+
+  // SCORE AND PLAYER STATE MANAGEMENT
+
   roundScore = (currentLetters, savedLetters) => {
     this.setState({
       score: roundScore.score(letterScore.bind(null, BOARD, FRENCH_POINTS, currentLetters, savedLetters), Object.keys(currentLetters))
@@ -188,17 +285,18 @@ class GameContainer extends React.Component {
     this.setState({players: players})
   }
 
-  play = () => {
-    this.pushScore(this.state.score)
-    this.pullFromStack()
-    this.setState({score: 0})
-  }
-
   render() {
     return (
       <div className={styles.game}>
         <div className={styles.board}>
-          <BoardContainer score={this.roundScore.bind(this)} play={this.play.bind(this)} getLetter={this.getLetter.bind(this)} resetLetter={this.resetLetter.bind(this)} />
+          <BoardContainer
+            selectedIndex={this.state.selectedSquareIndex}
+            letterPositions={{...this.state.savedBoardLetters, ...this.state.currentBoardLetters}}
+            handleKeyPress={this.handleKeyPressOnBoard.bind(this)}
+            handleKeyDown={this.handleKeyDownOnBoard.bind(this)}
+            handleBlur={this.handleBlurOnBoard.bind(this)}
+            handleClick={this.handleClickOnBoard}
+          />
         </div>
         <div className={styles.panel}>
           <div className={styles.players}>

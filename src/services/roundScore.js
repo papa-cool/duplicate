@@ -22,20 +22,20 @@ export default (function () {
       words = currentKeys.map((key) => {
         let [line, column] = key.split('-').map(value => parseInt(value, 10))
 
-        return reduceOverDirection(column, false, letterScore, buildKeyForLine.bind(null, line))
+        return reduceOverDirection(column, letterScore, buildKeyForLine.bind(null, line))
       })
 
       let [line, column] = currentKeys[0].split('-').map(value => parseInt(value, 10))
-      words.push(reduceOverDirection(line, true, letterScore, buildKeyForColumn.bind(null, column)))
+      words.push(reduceOverDirection(line, letterScore, buildKeyForColumn.bind(null, column)))
     } else if(areOnLine(currentKeys)) {
       words = currentKeys.map((key) => {
         let [line, column] = key.split('-').map(value => parseInt(value, 10))
 
-        return reduceOverDirection(line, false, letterScore, buildKeyForColumn.bind(null, column))
+        return reduceOverDirection(line, letterScore, buildKeyForColumn.bind(null, column))
       })
 
       let [line, column] = currentKeys[0].split('-').map(value => parseInt(value, 10))
-      words.push(reduceOverDirection(column, true, letterScore, buildKeyForLine.bind(null, line)))
+      words.push(reduceOverDirection(column, letterScore, buildKeyForLine.bind(null, line)))
     } else {
       return 0
     }
@@ -67,10 +67,6 @@ export default (function () {
   // initialIndex is an integer between 0 and 14
   // It is the index line or index column of a current letter.
   //
-  // wordPresent is a boolean
-  // The current letter must only be count if there is other letter in the same direction.
-  // or if the letter is alone in both directions.
-  //
   // letterScore return an Object with
   // - the score which is an integer between 0 and 30. Take into account double letter and triple letter
   // - the factor which is undefined, 2 or 3. related to double word and triple word.
@@ -80,8 +76,9 @@ export default (function () {
   // - y is the index of the line
   // - x is the index of the column
   // builKey already have a fixed column or fixed line index and expect to receive the other index as argument.
-  function reduceOverDirection(initialIndex, wordPresent, letterScore, buildKey) {
-    let factors = [0], scoreObj, index
+  function reduceOverDirection(initialIndex, letterScore, buildKey) {
+    // wordPresent ensure we won't count a one letter word.
+    let factors = [0], wordPresent = false, scoreObj, index
 
     index = initialIndex - 1
     while(index >= 0) {

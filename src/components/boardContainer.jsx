@@ -40,10 +40,10 @@ class BoardContainer extends React.Component {
     // If a letter has already been moved on the selected square,
     // the letter is sent back to the easel before being replaced.
     if(this.state.current[this.state.selectedIndex]) {
-      this.props.easel.current.resetLetter(this.state.current[this.state.selectedIndex])
+      this.props.resetLetter(this.state.current[this.state.selectedIndex])
     }
     // The requested letter is moved to the selected square if available in the easel.
-    if(this.props.easel.current.getLetter(letter)) {
+    if(this.props.getLetter(letter)) {
       new_current[this.state.selectedIndex] = letter
     }
     
@@ -57,7 +57,7 @@ class BoardContainer extends React.Component {
     if(this.state.saved[this.state.selectedIndex]) { return }
     // If present, the letter on the selected square is sent back to the easel.
     if(this.state.current[this.state.selectedIndex]) {
-      this.props.easel.current.resetLetter(this.state.current[this.state.selectedIndex])
+      this.props.resetLetter(this.state.current[this.state.selectedIndex])
     }
 
     let { [this.state.selectedIndex]: _, ...new_current } = this.state.current;

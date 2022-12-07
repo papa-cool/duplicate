@@ -3,10 +3,11 @@ import styles from './gameContainer.module.css';
 import BoardContainer from './boardContainer.jsx';
 import EaselContainer from './easelContainer.jsx';
 import PlayerContainer from './playerContainer.jsx';
+import Knuth from '../services/knuthShuffle.js';
 import letterScore from '../services/letterScore.js';
 import roundScore from '../services/roundScore.js';
 import BOARD from '../data/board.js';
-import { FRENCH_POINTS } from '../data/lettersDistribution.js';
+import { FRENCH, FRENCH_POINTS } from '../data/lettersDistribution.js';
 import { useParams } from 'react-router-dom';
 import { getDatabase, ref, child, set, get, onValue } from "firebase/database";
 
@@ -71,14 +72,16 @@ class GameContainer extends React.Component {
   constructor(props){
     super(props)
     this.state = {
+      // Stack of letters that will be pull after each round to fill the easel
+      // in order to have 7 letters per round.
+      stackLetters: [],
+      // Letters displayed in the easel and that can be move to the board during the round.
+      easelLetters: [],
       score: 0,
       name: '',
       players: {},
-      creator: false,
+      creator: false
     }
-    this.player = React.createRef()
-    this.easel = React.createRef()
-    this.round = React.createRef()
   }
 
   // If the game id does not exist yet on firebase, we want to create the game making the current
@@ -87,7 +90,15 @@ class GameContainer extends React.Component {
   // the new user in the game
   componentDidMount() {
     if (!this.props.multiplayer) {
-      this.setState({ name: 'Solitaire', players: { Solitaire: [] } })
+      let stack = Knuth.knuthShuffle(FRENCH)
+      let letters = stack.splice(0, 7)
+
+      this.setState({
+        stackLetters: stack,
+        easelLetters: letters,
+        name: 'Solitaire',
+        players: { Solitaire: [] }
+      })
       return
     }
 
@@ -126,6 +137,42 @@ class GameContainer extends React.Component {
     });
   }
 
+  // EASEL STATE MANAGEMENT
+
+  // Pull new letter from the stack to fill the easel after playing letters on the board.
+  pullFromStack() {
+    let stack = this.state.stackLetters
+    let letters = stack.splice(0, 7-this.state.easelLetters.length)
+
+    this.setState({
+      stackLetters: stack,
+      easelLetters: this.state.easelLetters.concat(letters),
+    })
+  }
+
+  // return the queryLetter if present in the array this.state.easelLetters
+  getLetter(queryLetter) {
+    let letter = null
+    let letters = this.state.easelLetters
+
+    this.state.easelLetters.some((element, index) => {
+      if(element === queryLetter) {
+        letter = element
+        letters.splice(index, 1)
+        this.setState({easelLetters: letters})
+        return true
+      }
+      return false
+    })
+
+    return letter
+  }
+
+  resetLetter(letter) {
+    this.state.easelLetters.push(letter)
+    this.setState({easelLetters: this.state.easelLetters})
+  }
+
   roundScore = (currentLetters, savedLetters) => {
     this.setState({
       score: roundScore.score(letterScore.bind(null, BOARD, FRENCH_POINTS, currentLetters, savedLetters), Object.keys(currentLetters))
@@ -143,7 +190,7 @@ class GameContainer extends React.Component {
 
   play = () => {
     this.pushScore(this.state.score)
-    this.easel.current.pullFromStack()
+    this.pullFromStack()
     this.setState({score: 0})
   }
 
@@ -151,7 +198,7 @@ class GameContainer extends React.Component {
     return (
       <div className={styles.game}>
         <div className={styles.board}>
-          <BoardContainer easel={this.easel} score={this.roundScore.bind(this)} play={this.play.bind(this)} />
+          <BoardContainer score={this.roundScore.bind(this)} play={this.play.bind(this)} getLetter={this.getLetter.bind(this)} resetLetter={this.resetLetter.bind(this)} />
         </div>
         <div className={styles.panel}>
           <div className={styles.players}>
@@ -163,7 +210,7 @@ class GameContainer extends React.Component {
             </div>
           </div>
           <div className={styles.easel}>
-            <EaselContainer ref={this.easel}/>
+            <EaselContainer letters={this.state.easelLetters}/>
           </div>
           <div className={styles.draft}>
             <textarea className={styles.textarea} name="draft" />

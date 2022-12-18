@@ -96,7 +96,7 @@ class GameContainer extends React.Component {
   // If the game id already exist on firebase, we wait for the form submission in order to add
   // the new user in the game
   componentDidMount() {
-    if (!this.props.multiplayer) {
+    if (this.props.mode === "solo") {
       let stack = Knuth.knuthShuffle(FRENCH)
       let letters = stack.splice(0, 7)
 
@@ -334,7 +334,7 @@ class GameContainer extends React.Component {
 }
 
 GameContainer.propTypes = {
-  multiplayer: PropTypes.bool,
+  mode: PropTypes.string,// solo, duplicate, classic
   gameId: PropTypes.string,
   name: PropTypes.string
 };

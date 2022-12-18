@@ -37,8 +37,8 @@ function App() {
           </p>
         </header>
         <Routes>
-          <Route path="/" element={<GameContainer multiplayer={false} />} />
-          <Route path='/game/:id/:name' element={<GameContainer multiplayer={true} />} />
+          <Route path="/" element={<GameContainer mode={"solo"} />} />
+          <Route path='/game/:id/:name' element={<GameContainer mode={"duplicate"} />} />
         </Routes>
       </div>
     </Router>

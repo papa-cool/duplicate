@@ -11,6 +11,7 @@ import BOARD from '../data/board.js';
 import { FRENCH, FRENCH_POINTS } from '../data/lettersDistribution.js';
 import { useParams } from 'react-router-dom';
 import { getDatabase, ref, child, set, get, onValue } from "firebase/database";
+import PropTypes from 'prop-types';
 
 function withRouter(GameContainer) {
   return (props) => {
@@ -66,10 +67,6 @@ function withRouter(GameContainer) {
 //   }
 // }
 class GameContainer extends React.Component {
-  // props:
-  // multiplayer
-  // gameId
-  // name
   constructor(props){
     super(props)
     this.state = {
@@ -335,5 +332,11 @@ class GameContainer extends React.Component {
     );
   }
 }
+
+GameContainer.propTypes = {
+  multiplayer: PropTypes.bool,
+  gameId: PropTypes.string,
+  name: PropTypes.string
+};
 
 export default withRouter(GameContainer);

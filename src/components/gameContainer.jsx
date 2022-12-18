@@ -253,6 +253,15 @@ class GameContainer extends React.Component {
     this.setState({players: players, score: 0})
   }
 
+  calculateScore() {
+    this.setState({
+      score: roundScore.score(
+        letterScore.bind(null, BOARD, FRENCH_POINTS, this.state.currentBoardLetters, this.state.savedBoardLetters),
+        Object.keys(this.state.currentBoardLetters)
+      )
+    })
+  }
+
   // USER EVENT MANAGEMENT
 
   // Select a square.
@@ -283,20 +292,6 @@ class GameContainer extends React.Component {
 
   handleBlurOnBoard() {
     this.removeSelection()
-  }
-
-  // SCORE AND PLAYER STATE MANAGEMENT
-
-  calculateScore() {
-    this.setState({
-      score: roundScore.score(
-        letterScore.bind(null, BOARD, FRENCH_POINTS, this.state.currentBoardLetters, this.state.savedBoardLetters),
-        Object.keys(this.state.currentBoardLetters)
-      )
-    })
-  }
-
-  pushScore(score) {
   }
 
   render() {

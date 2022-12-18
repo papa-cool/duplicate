@@ -147,6 +147,16 @@ class GameContainer extends React.Component {
     });
   }
 
+  // End the round and start a new round
+  // 
+  // On solo mode
+  // It saves current letters and fills the easel with letter from the stack.
+  play() {
+    this.saveScore()
+    this.saveCurrentBoardLetters()
+    this.pullFromStack()
+  }
+
   // EASEL STATE MANAGEMENT
 
   // Pull new letter from the stack to fill the easel after playing letters on the board.
@@ -227,16 +237,26 @@ class GameContainer extends React.Component {
     this.setState({currentBoardLetters: new_current}, () => this.calculateScore())
   }
 
-  // Save current letters and fill the easel with letter from the stack.
-  play() {
+  saveCurrentBoardLetters() {
     this.setState({
       currentBoardLetters: {},
       savedBoardLetters: {...this.state.savedBoardLetters, ...this.state.currentBoardLetters}
-    })
-    this.pushScore(this.state.score)
-    this.pullFromStack()
-    this.setState({score: 0})
+    })    
   }
+
+  // SCORE/PLAYERS STATE MANAGEMENT
+
+  saveScore() {
+    let players = {...this.state.players}
+    let scores = players[this.state.name]
+    let last_score = scores[scores.length - 1] || 0
+
+    scores.push(this.state.score + last_score)
+
+    this.setState({players: players, score: 0})
+  }
+
+  // USER EVENT MANAGEMENT
 
   // Select a square.
   handleClickOnBoard = (clickedSquare) => {
@@ -280,12 +300,6 @@ class GameContainer extends React.Component {
   }
 
   pushScore(score) {
-    let players = {...this.state.players}
-    let scores = players[this.state.name]
-    let last_score = scores[scores.length - 1] || 0
-
-    scores.push(score + last_score)
-    this.setState({players: players})
   }
 
   render() {

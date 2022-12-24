@@ -87,6 +87,9 @@ class GameContainer extends React.Component {
       score: 0,
       name: '',
       players: {},
+      // Is set to true when the game begin.
+      // It allows to determine if the stack has been created.
+      started: false,
       // On duplicate or classic mode, the user will wait after each round that other player have
       // played too. During this time, letters cannot be moved.
       waiting: false,
@@ -106,6 +109,7 @@ class GameContainer extends React.Component {
       this.setState({
         stackLetters: stack,
         easelLetters: letters,
+        started: true,
         name: 'Solitaire',
         players: { Solitaire: [] }
       })
@@ -145,6 +149,11 @@ class GameContainer extends React.Component {
         this.setState({ players: snapshot.val() })
       }
     });
+  }
+
+  // Create the stack and fill the easel for the first time
+  // Only used on duplicate mode.
+  start() {
   }
 
   // End the round and start a new round
@@ -295,7 +304,11 @@ class GameContainer extends React.Component {
     } else if(event.keyCode === 40) {
       this.changeSelectedSquare(tableCursor.down(this.state.selectedSquareIndex))
     } else if(event.keyCode === 13) {
+      if(this.state.started) {
       this.play()
+      } else {
+        this.start()
+      }
     }
   }
 

@@ -122,7 +122,7 @@ class GameContainer extends React.Component {
       if (snapshot.exists()) {
         this.setState({creator: snapshot.val() === this.props.name})
       } else {
-        set(gameRef, {creator: this.props.name})
+        set(creatorRef, this.props.name)
         this.setState({creator: true})
       }
     }).catch((error) => {

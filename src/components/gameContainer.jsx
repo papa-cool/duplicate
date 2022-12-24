@@ -147,7 +147,10 @@ class GameContainer extends React.Component {
     // We want to sync players and their scores between every users.
     onValue(playersRef, (snapshot) => {
       if (snapshot.exists()) {
-        this.setState({ players: snapshot.val() })
+        // We only update the state if every players have played.
+        if ([...new Set(Object.entries(snapshot.val()).map(([_name, scores]) => scores.length))].length === 1) {
+          this.setState({ players: snapshot.val() }, () => this.playIfWinner())
+        }
       }
     });
 
@@ -178,10 +181,42 @@ class GameContainer extends React.Component {
   // 
   // On solo mode
   // It saves current letters and fills the easel with letter from the stack.
+  // 
+  // On dupicate mode
+  // It only sync the score.
+  // Then, only the user with the best score will save its current letters, fill the easel and sync
+  // the new round
   play() {
-    this.saveScore()
-    this.saveCurrentBoardLetters()
-    this.pullFromStack()
+    if (this.props.mode === "solo") {
+      this.saveScore()
+      this.saveCurrentBoardLetters()
+      this.pullFromStack()
+      return
+    }
+
+    this.setState({waiting: true}, () => this.syncScore())
+  }
+
+  // Check if winner or creator, then play and sync, else do nothing
+  // Only used on duplicate mode
+  playIfWinner() {
+    if (this.state.score === 0) { return }
+    if (this.isNotWinner()) { return }
+
+    this.syncBoardAndEasel()
+  }
+
+  isNotWinner() {
+    let myScores = this.state.players[this.props.name]
+    return Object.entries(this.state.players).some(([name, scores], _index) => {
+      // We don't sync if a player has a better score
+      // In case of equality, it is the creator that will sync its game.
+      // This last rule must be improved as it won't work for three players.
+      if (name === this.props.name) { return false }
+      if (scores[scores.length-1] > myScores[myScores.length-1]) { return true }
+      if (!this.state.creator && scores[scores.length-1] === myScores[myScores.length-1]) { return true }
+      return false
+    })
   }
 
   // EASEL STATE MANAGEMENT
@@ -204,13 +239,13 @@ class GameContainer extends React.Component {
 
     if (this.state.stackLetters.length === 0) {
       // Create the stack at the beginning of the game.
-        stack = Knuth.knuthShuffle(FRENCH)
+      stack = Knuth.knuthShuffle(FRENCH)
     } else {
       stack = this.state.stackLetters
-      }
-      letters = stack.splice(0, 7-this.state.easelLetters.length)
+    }
+    letters = stack.splice(0, 7-this.state.easelLetters.length)
 
-      set(lettersRef, {stack: stack, easel: this.state.easelLetters.concat(letters), board: board})
+    set(lettersRef, {stack: stack, easel: this.state.easelLetters.concat(letters), board: board})
   }
 
   // return the queryLetter if present in the array this.state.easelLetters
@@ -299,6 +334,14 @@ class GameContainer extends React.Component {
     this.setState({players: players, score: 0})
   }
 
+  syncScore() {
+    const playerRef = ref(getDatabase(), 'games/'+this.props.gameId+'/players/'+this.props.name);
+    let scores = this.state.players[this.props.name]
+    let last_score = scores[scores.length - 1]
+    scores.push(last_score + this.state.score)
+    set(playerRef, scores)
+  }
+
   calculateScore() {
     this.setState({
       score: roundScore.score(
@@ -339,7 +382,7 @@ class GameContainer extends React.Component {
       this.changeSelectedSquare(tableCursor.down(this.state.selectedSquareIndex))
     } else if(event.keyCode === 13) {
       if(this.state.started) {
-      this.play()
+        this.play()
       } else {
         this.start()
       }

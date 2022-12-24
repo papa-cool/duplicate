@@ -132,8 +132,8 @@ class GameContainer extends React.Component {
     // We want the new player to be displayed for every users.
     get(playerRef).then((snapshot) => {
       if (!snapshot.exists()) {
-        // We store an empty string instead of an empty array because firebase don't store empty object/array.
-        set(playerRef, "")
+        // We store an array containing 0 because firebase don't store empty object/array.
+        set(playerRef, [0])
       }
     }).catch((error) => {
       console.error(error);

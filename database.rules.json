@@ -8,9 +8,6 @@
         "creator": { ".validate": "newData.isString()" },
         "players": {
           "$name": { 
-            // We store an empty string (initial state to display players).
-            ".validate": "newData.isString()",
-            // Or we store an object representing a list of integer.
             "$index": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" },
           }
         },

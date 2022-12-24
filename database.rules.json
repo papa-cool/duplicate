@@ -11,8 +11,17 @@
             "$index": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000" },
           }
         },
+        "letters": {
+          // The stack and the easel are objects representing a list of letter.
+          "stack": { "$index": { ".validate": "newData.isString() && newData.val().matches(/.{1}/)" } },
+          "easel": { "$index": { ".validate": "newData.isString() && newData.val().matches(/.{1}/)" } },
+          // The board contains the position of the letters saved.
+          "board": { "$index": { ".validate": "newData.isString() && newData.val().matches(/.{1}/)" } },          
+          "$other": { ".validate": false }
+        },
+        "$other": { ".validate": false }
       }
     },
     "$other": { ".validate": false }
-  }
+    }
 }

@@ -120,6 +120,7 @@ class GameContainer extends React.Component {
     const creatorRef = child(gameRef, 'creator');
     const playersRef = child(gameRef, 'players');
     const playerRef = child(playersRef, this.props.name);
+    const lettersRef = child(gameRef, 'letters');
 
     // If the creator does not exist remotely, it means the user is the creator.
     get(creatorRef).then((snapshot) => {
@@ -149,11 +150,28 @@ class GameContainer extends React.Component {
         this.setState({ players: snapshot.val() })
       }
     });
+
+    // We want to sync letters (easel and board) between every users.
+    // Each time the letters are updated, a new round start.
+    onValue(lettersRef, (snapshot) => {
+      if (snapshot.exists()) {
+        this.setState({
+          stackLetters: snapshot.val()['stack'],
+          easelLetters: snapshot.val()['easel'] || [],
+          savedBoardLetters: snapshot.val()['board'] || {},
+          currentBoardLetters: {},
+          score: 0,
+          started: true,
+          waiting: false
+        })
+      }
+    });
   }
 
   // Create the stack and fill the easel for the first time
   // Only used on duplicate mode.
   start() {
+    this.syncBoardAndEasel()
   }
 
   // End the round and start a new round
@@ -177,6 +195,22 @@ class GameContainer extends React.Component {
       stackLetters: stack,
       easelLetters: this.state.easelLetters.concat(letters),
     })
+  }
+
+  syncBoardAndEasel() {
+    const lettersRef = ref(getDatabase(), 'games/'+this.props.gameId+'/letters')
+    let stack, letters
+    let board = {...this.state.savedBoardLetters, ...this.state.currentBoardLetters}
+
+    if (this.state.stackLetters.length === 0) {
+      // Create the stack at the beginning of the game.
+        stack = Knuth.knuthShuffle(FRENCH)
+    } else {
+      stack = this.state.stackLetters
+      }
+      letters = stack.splice(0, 7-this.state.easelLetters.length)
+
+      set(lettersRef, {stack: stack, easel: this.state.easelLetters.concat(letters), board: board})
   }
 
   // return the queryLetter if present in the array this.state.easelLetters

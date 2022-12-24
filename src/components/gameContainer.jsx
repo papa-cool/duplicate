@@ -87,6 +87,9 @@ class GameContainer extends React.Component {
       score: 0,
       name: '',
       players: {},
+      // On duplicate or classic mode, the user will wait after each round that other player have
+      // played too. During this time, letters cannot be moved.
+      waiting: false,
       creator: false
     }
   }
@@ -266,15 +269,21 @@ class GameContainer extends React.Component {
 
   // Select a square.
   handleClickOnBoard = (clickedSquare) => {
+    if(this.state.waiting) { return }
+
     this.changeSelectedSquare(clickedSquare.props.index)
   }
 
   // Add pressed letter if available to the selected square.
   handleKeyPressOnBoard(event) {
+    if(this.state.waiting) { return }
+
     this.moveLetter(event.key.toUpperCase())
   }
 
   handleKeyDownOnBoard(event) {
+    if(this.state.waiting) { return }
+
     if(event.keyCode === 8 || event.keyCode === 46) {
       this.removeLetter()
     } else if(event.keyCode === 37) {

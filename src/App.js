@@ -14,7 +14,8 @@ import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyCdpRGo1Y-UZU9Ffw8100prFGrNg-iWbD4",
   authDomain: "duplicate-game.firebaseapp.com",
-  databaseURL: "http://127.0.0.1:9000/?ns=duplicate-game",// "https://duplicate-game.firebaseio.com",
+  databaseURL: "http://127.0.0.1:9000/?ns=duplicate-game", // For development
+  // databaseURL: "https://duplicate-game.firebaseio.com", // For production
   projectId: "duplicate-game",
   storageBucket: "duplicate-game.appspot.com",
   messagingSenderId: "869241889874",

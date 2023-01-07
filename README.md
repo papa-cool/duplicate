@@ -4,6 +4,14 @@ Deployed with firebase => https://duplicate.web.app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Installation
+
+```
+npm install create-react-app
+npm install -g firebase-tools
+firebase init emulators
+```
+
 ## Usage
 
 ```bash
@@ -13,6 +21,7 @@ npm start
 
 # Run the app in the development mode with firebase emulator
 firebase emulators:start
+npm run start
 
 # Launches the test runner in the interactive watch mode.
 npm test
@@ -22,6 +31,7 @@ npm run build
 
 # Deploy the app to firebase following configuration in firebase.json.
 firebase deploy
+npm run deploy
 ```
 
 

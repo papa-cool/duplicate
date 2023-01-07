@@ -22,7 +22,11 @@
       "port": 9000
     },
     "hosting": {
-      "port": 5000
-    }
+      "port": 4001
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

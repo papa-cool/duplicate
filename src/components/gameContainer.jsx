@@ -327,18 +327,16 @@ class GameContainer extends React.Component {
   saveScore() {
     let players = {...this.state.players}
     let scores = players[this.state.name]
-    let last_score = scores[scores.length - 1] || 0
 
-    scores.push(this.state.score + last_score)
-
+    scores.push(this.state.score)
     this.setState({players: players, score: 0})
   }
 
   syncScore() {
     const playerRef = ref(getDatabase(), 'games/'+this.props.gameId+'/players/'+this.props.name);
     let scores = this.state.players[this.props.name]
-    let last_score = scores[scores.length - 1]
-    scores.push(last_score + this.state.score)
+
+    scores.push(this.state.score)
     set(playerRef, scores)
   }
 

@@ -352,10 +352,10 @@ class GameContainer extends React.Component {
   // USER EVENT MANAGEMENT
 
   // Select a square.
-  handleClickOnBoard = (clickedSquare) => {
+  handleClickOnBoard = (index) => {
     if(this.state.waiting) { return }
 
-    this.changeSelectedSquare(clickedSquare.props.index)
+    this.changeSelectedSquare(index)
   }
 
   // Add pressed letter if available to the selected square.

@@ -11,8 +11,8 @@ class BoardContainer extends React.Component {
   }
 
   // Select a square.
-  handleClick = (clickedSquare) => {
-    this.props.handleClick(clickedSquare)
+  handleClick = (index) => {
+    this.props.handleClick(index)
     this.board.current.focus()
   }
 
@@ -27,8 +27,8 @@ class BoardContainer extends React.Component {
                   squares_line.map((square, index_square) => {
                     let key = index_line.toString()+'-'+index_square.toString()
                     return (
-                      <div className={styles.column} key={key}>
-                        <SquareContainer index={key} selected={this.props.selectedIndex === key} letter={this.props.letterPositions[key]} type={square.type} handleClick={this.handleClick} />
+                      <div className={styles.column} key={key} onClick={this.handleClick.bind(this, key)}>
+                        <SquareContainer index={key} selected={this.props.selectedIndex === key} letter={this.props.letterPositions[key]} type={square.type}/>
                       </div>
                     )
                   })

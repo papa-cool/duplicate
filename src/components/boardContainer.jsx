@@ -1,8 +1,8 @@
-import React from 'react';
-import styles from './boardContainer.module.css';
-import SquareContainer from './squareContainer.jsx';
-import BOARD from '../data/board.js';
-import PropTypes from 'prop-types';
+import React from 'react'
+import styles from './boardContainer.module.css'
+import SquareContainer from './squareContainer.jsx'
+import BOARD from '../data/board.js'
+import PropTypes from 'prop-types'
 
 function BoardContainer(props) {
   const board = React.createRef()
@@ -34,7 +34,7 @@ function BoardContainer(props) {
         })
       }
     </div>
-  );
+  )
 }
 
 BoardContainer.propTypes = {
@@ -44,6 +44,6 @@ BoardContainer.propTypes = {
   handleKeyDown: PropTypes.func,
   handleBlur: PropTypes.func,
   handleClick: PropTypes.func
-};
+}
 
-export default BoardContainer;
+export default BoardContainer

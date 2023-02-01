@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import GameContainer from './components/gameContainer.jsx';
+import DuplicateContainer from './components/duplicateContainer.jsx';
+import SoloContainer from './components/soloContainer.jsx';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
@@ -38,8 +39,8 @@ function App() {
           </p>
         </header>
         <Routes>
-          <Route path="/" element={<GameContainer mode={"solo"} />} />
-          <Route path='/game/:id/:name' element={<GameContainer mode={"duplicate"} />} />
+          <Route path="/" element={<SoloContainer />} />
+          <Route path='/game/:gameId/:name' element={<DuplicateContainer />} />
         </Routes>
       </div>
     </Router>

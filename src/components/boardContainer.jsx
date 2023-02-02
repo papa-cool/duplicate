@@ -14,7 +14,7 @@ function BoardContainer(props) {
   }
 
   return (
-    <div className={styles.board} ref={board} onKeyPress={props.handleKeyPress} onKeyDown={props.handleKeyDown} onBlur={props.handleBlur} tabIndex="-1" style={{outline: 'none'}}>
+    <div className={styles.board} ref={board} onKeyDown={props.handleKeyDown} onBlur={props.handleBlur} tabIndex="-1" style={{outline: 'none'}}>
       {
         BOARD.map((squares_line, index_line) => {
           return (

@@ -305,32 +305,29 @@ function GameContainer(props) {
     changeSelectedSquare(index)
   }
 
-  // Add pressed letter if available to the selected square.
-  const handleKeyPressOnBoard = (event) => {
-    if(waiting) { return }
-
-    moveLetter(event.key.toUpperCase())
-  }
+  const letterRegex = new RegExp("[A-Z ]")
 
   const handleKeyDownOnBoard = (event) => {
     if(waiting) { return }
 
-    if(event.keyCode === 8 || event.keyCode === 46) {
+    if(event.code === "Backspace") {
       removeLetter()
-    } else if(event.keyCode === 37) {
+    } else if(event.code === "ArrowLeft") {
       changeSelectedSquare(tableCursor.left(selectedSquareIndex))
-    } else if(event.keyCode === 38) {
+    } else if(event.code === "ArrowUp") {
       changeSelectedSquare(tableCursor.up(selectedSquareIndex))
-    } else if(event.keyCode === 39) {
+    } else if(event.code === "ArrowRight") {
       changeSelectedSquare(tableCursor.right(selectedSquareIndex))
-    } else if(event.keyCode === 40) {
+    } else if(event.code === "ArrowDown") {
       changeSelectedSquare(tableCursor.down(selectedSquareIndex))
-    } else if(event.keyCode === 13) {
+    } else if(event.code === "Enter") {
       if(started) {
         play()
       } else {
         start()
       }
+    } else if(letterRegex.test(event.key.toUpperCase())) {
+      moveLetter(event.key.toUpperCase())
     }
   }
 
@@ -344,7 +341,6 @@ function GameContainer(props) {
         <BoardContainer
           selectedIndex={selectedSquareIndex}
           letterPositions={{...savedBoardLetters, ...currentBoardLetters}}
-          handleKeyPress={handleKeyPressOnBoard}
           handleKeyDown={handleKeyDownOnBoard}
           handleBlur={handleBlurOnBoard}
           handleClick={handleClickOnBoard}
